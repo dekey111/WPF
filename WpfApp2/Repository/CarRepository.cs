@@ -42,6 +42,7 @@ namespace WpfApp2.Repository
                 Number = item.Number,
             };
             _db.Cars.Add(car);
+            await Save();
             return new CarResponse(car);
         }
 
@@ -60,7 +61,8 @@ namespace WpfApp2.Repository
             findCar.Name = item.Name;
             findCar.Number = item.Number;
 
-            _db.Cars.Update(findCar);
+            _db.Cars.Update(findCar); 
+            await Save();
             return new CarResponse(findCar);
         }
 

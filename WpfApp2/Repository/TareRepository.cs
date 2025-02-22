@@ -58,7 +58,7 @@ namespace WpfApp2.Repository
                 TareWeight = item.TareWeight
             };
             _db.Tares.Add(tare);
-
+            await Save();
             return new TareResponse(tare);
         }
 
@@ -84,6 +84,7 @@ namespace WpfApp2.Repository
             findTare.TareWeight = item.TareWeight;
 
             _db.Tares.Update(findTare);
+            await Save();
             return new TareResponse(findTare);
         }
 
@@ -100,6 +101,7 @@ namespace WpfApp2.Repository
                 throw new Exception("Тара не найдена!");
 
             _db.Tares.Remove(findTare);
+            await Save();
         }
 
         private bool disposed = false;

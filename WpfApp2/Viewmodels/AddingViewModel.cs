@@ -128,7 +128,6 @@ namespace WpfApp2.ViewModels
                         };
 
                         var newItem = await _dbCarResponse.Create(carResponse);
-                        await _dbCarResponse.Save();
                         CarList.Add(newItem);
                     }
                     catch (Exception ex)
@@ -336,7 +335,6 @@ namespace WpfApp2.ViewModels
                         };
 
                         var newItem = await _dbTareResponse.Create(tareResponse);
-                        await _dbTareResponse.Save();
                         Tars.Add(newItem);
                     }
                     catch (Exception ex)
