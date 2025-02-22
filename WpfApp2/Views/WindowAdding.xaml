@@ -1,0 +1,191 @@
+﻿<Window x:Class="WpfApp2.Views.WindowAdding"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Окно добавления" MinHeight="500" Height="700" Width="1100" MinWidth="800">
+    <Grid>
+
+        <TabControl>
+
+            <TabItem Header="Добавление транспорта" Height="50">
+
+                <ScrollViewer>
+
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="10" 
+                             Text="Добавление транспорта" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" FontSize="30" 
+                               FontWeight="Medium"/>
+
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="10" 
+                             Tag="Название" Text="{Binding NameCar}"/>
+
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="10" 
+                             Tag="Номер" Text="{Binding NumberCar}"/>
+
+                        <Button Grid.Row="3" Grid.Column="1" Margin="80 30" 
+                            Content="Добавить" Command="{Binding AddingCar}"/>
+                    </Grid>
+                </ScrollViewer>
+
+            </TabItem>
+
+
+            <TabItem Header="Добавление тары"  Height="50">
+
+                <ScrollViewer>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="2*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="10" 
+                             Text="Добавление тары" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" FontSize="30" 
+                               FontWeight="Medium"/>
+
+
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="10" 
+                             Tag="Номер" Text="{Binding NumberTare}"/>
+
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="10" 
+                             Tag="вес брутто"  Text="{Binding WeightGrossTare}"/>
+
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="10" 
+                             Tag="вес тары"  Text="{Binding WeightTare}"/>
+
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="10" 
+                             Tag="вес нетто"  Text="{Binding WeightNet}"/>
+                        
+                        
+
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="10" IsReadOnly="True"
+                             Tag="дата тары" Text="{Binding SelectedDateTareString}"/>
+
+                        <Calendar Grid.Row="5" Grid.Column="2" DisplayDateStart="2020-01-01"
+                                  Visibility="{Binding VisibilityCalendarTare}"
+                                  SelectedDate="{Binding SelectedDateTare}"/>
+
+                        <Button Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Margin="10"
+                                Content="Дата" Command="{Binding ShowCalendarTare}"/>
+
+
+
+
+                        <TextBox Grid.Row="6" Grid.Column="1" Margin="10" IsReadOnly="True"
+                             Tag="дата брутто" Text="{Binding SelectedDateGrossString}"/>
+
+                        <Calendar Grid.Row="6" Grid.Column="2" DisplayDateStart="2020-01-01"
+                                  Visibility="{Binding VisibilityCalendarGross}"
+                                  SelectedDate="{Binding SelectedDateGross}"/>
+
+                        <Button Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Margin="10"
+                                Content="Дата" Command="{Binding ShowCalendarGross}"/>
+
+
+                        
+
+                        <Button Grid.Row="7" Grid.Column="1" Margin="80 10" 
+                            Content="Добавить" Command="{Binding AddingTares}"/>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+
+
+
+            <TabItem Header="Добавление связи транспорта и тары"  Height="50">
+
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" 
+                             Text="Добавление связи транспорта с тарой" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" FontSize="30" 
+                               FontWeight="Medium" Grid.ColumnSpan="3"/>
+
+
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Text="Выбор транспорта"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"/>
+                        
+                        <ComboBox Grid.Row="2" Grid.Column="1" Margin="80 20" 
+                                  IsEditable="True"
+                                  ItemsSource="{Binding Cars}"
+                                  SelectedValue="{Binding SelectedCar}"
+                                  DisplayMemberPath="FullNameCar"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="1"
+                                   Text="Выбор тары"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Bottom"/>
+
+                        <ComboBox Grid.Row="4" Grid.Column="1" Margin="80 20" 
+                             Tag="Номер" IsEditable="True"
+                                  ItemsSource="{Binding Tars}"
+                                  SelectedValue="{Binding SelectedTare}"
+                                  DisplayMemberPath="Number"/>
+
+                        <Button Grid.Row="5" Grid.Column="1" Margin="80 20" 
+                            Content="Добавить" Command="{Binding AddingCarTares}"/>
+                    </Grid>
+                </ScrollViewer>
+
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
