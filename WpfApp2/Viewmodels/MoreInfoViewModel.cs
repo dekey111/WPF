@@ -1,58 +1,97 @@
 ﻿using ScottPlot;
+using ScottPlot.Colormaps;
+using ScottPlot.WPF;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfApp2.Interfaces;
 using WpfApp2.Models;
+using WpfApp2.Repository;
 using WpfApp2.Views;
 
 namespace WpfApp2.ViewModels
 {
     public class MoreInfoViewModel : INotifyPropertyChanged
     {
-        private ViewCarTareResponse _selectedCarTare;
-        public ViewCarTareResponse SelectedCarTare
+        private CarResponse _selectedCar;
+        public CarResponse SelectedCar
         {
-            get => _selectedCarTare;
+            get => _selectedCar;
             set
             {
-                _selectedCarTare = value;
-                OnPropertyChanged(nameof(SelectedCarTare));
+                _selectedCar = value;
+                OnPropertyChanged(nameof(SelectedCar));
             }
         }
-        public MoreInfoViewModel(ViewCarTareResponse selectedCarTare, ScottPlot.WPF.WpfPlot wpfPlot)
+
+
+        private ObservableCollection<TareResponse> _taresByCar;
+        public ObservableCollection<TareResponse> TaresByCar
         {
-            SelectedCarTare = selectedCarTare;
-
-
-            Dictionary<string, double> dict = new Dictionary<string, double>()
+            get => _taresByCar;
+            set
             {
-                {"Нетто", SelectedCarTare.NetWeight },
-                {"Брутто", SelectedCarTare.GrossWeight },
-                {"Тара", SelectedCarTare.TareWeight }
+                _taresByCar = value;
+                OnPropertyChanged(nameof(TaresByCar));
+            }
+        }
+
+
+        IRepositoryToFind<TareResponse> _dbTareResponse;
+        private ScottPlot.WPF.WpfPlot _wpfPlot;
+
+        public MoreInfoViewModel(CarResponse selectedCar, ScottPlot.WPF.WpfPlot wpfPlot)
+        {
+            SelectedCar = selectedCar;
+            _dbTareResponse =  new TareRepository();
+            _wpfPlot = wpfPlot;
+
+            GetData();
+
+
+
+        }
+        private async Task GetData()
+        {
+            TaresByCar = new ObservableCollection<TareResponse>(await _dbTareResponse.GetFromId(SelectedCar.Id));
+            GenerateDiagramm();
+            GetTaresInfo();
+        }
+
+        private async Task GetTaresInfo()
+        {
+
+        }
+
+
+        private async Task GenerateDiagramm()
+        {
+            // plot sample DateTime data
+            DateTime[] dates = TaresByCar.Select(x => Convert.ToDateTime(x.TareDate)).ToArray();
+            double[] ys =  TaresByCar.Select(x => x.TareWeight).ToArray();
+            _wpfPlot.Plot.Add.Scatter(dates, ys);
+            _wpfPlot.Plot.Axes.DateTimeTicksBottom();
+
+            // add logic into the RenderStarting event to customize tick labels
+            _wpfPlot.Plot.RenderManager.RenderStarting += (s, e) =>
+            {
+                Tick[] ticks = _wpfPlot.Plot.Axes.Bottom.TickGenerator.Ticks;
+                for (int i = 0; i < ticks.Length; i++)
+                {
+                    DateTime dt = DateTime.FromOADate(ticks[i].Position);
+                    string label = dt.ToString("d");
+                    ticks[i] = new Tick(ticks[i].Position, label);
+                }
             };
 
-            var barPlot = wpfPlot.Plot.Add.Bars(dict.Values.ToArray());
-
-            var dictKeys = dict.Keys.ToArray();
-            int i = 0;
-            foreach (var bar in barPlot.Bars)
-            {
-                bar.Label = dictKeys[i];
-                i++;
-            }
-
-            barPlot.ValueLabelStyle.Bold = true;
-            barPlot.ValueLabelStyle.FontSize = 18;
-
-            wpfPlot.Plot.Axes.Margins(bottom: 0, top: .2);
-            wpfPlot.Refresh();
+            _wpfPlot.Refresh();
         }
-
 
 
         public event PropertyChangedEventHandler PropertyChanged;

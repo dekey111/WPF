@@ -5,7 +5,7 @@ using WpfApp2.Database;
 
 namespace WpfApp2.Repository
 {
-    public class TareRepository : IRepository<TareResponse>
+    public class TareRepository : IRepositoryToFind<TareResponse>
     {
         private readonly BdtestTaskServerstalContext _db;
         public TareRepository()
@@ -20,15 +20,22 @@ namespace WpfApp2.Repository
             return tareResponses;
         }
 
+        public async Task<IEnumerable<TareResponse>> GetFromId(long id)
+        {
+            List<TareResponse> tareResponses = new List<TareResponse>();
+            _db.Tares.Where(x => x.IdCar == id).ToList().ForEach(x => tareResponses.Add(new TareResponse(x)));
+            return tareResponses;
+        }
+
         public async Task<TareResponse> Create(TareResponse item)
         {
-            var findTare = await _db.Tares.FirstOrDefaultAsync(x => x.Number == item.Number);
-            if (findTare != null)
+            if (_db.Tares.Any(x => x.Number == item.Number))
                 throw new Exception("Такая тара уже есть!");
 
             Tare tare = new Tare()
             {
                 Number = item.Number,
+                IdCar = item.IdCar,
                 GrossWeight = item.GrossWeight,
                 DateGross = item.DateGross,
                 NetWeight = item.NetWeight,
@@ -40,12 +47,15 @@ namespace WpfApp2.Repository
             return new TareResponse(tare);
         }
 
+
+
         public async Task<TareResponse> Update(TareResponse item)
         {
-            var findTare = await _db.Tares.FirstOrDefaultAsync(x => x.Id == item.Id);
+            var findTare = _db.Tares.FirstOrDefault(x => x.Id == item.Id);
             if (findTare == null)
                 throw new Exception("Тара не найдена!");
 
+            findTare.IdCar = item.IdCar;
             findTare.Number = item.Number;
             findTare.GrossWeight= item.GrossWeight;
             findTare.DateGross= item.DateGross;
@@ -59,7 +69,7 @@ namespace WpfApp2.Repository
 
         public async Task Delete(long id)
         {
-            var findTare = await _db.Tares.FirstOrDefaultAsync(x => x.Id == id);
+            var findTare = _db.Tares.FirstOrDefault(x => x.Id == id);
             if (findTare == null)
                 throw new Exception("Тара не найдена!");
 
@@ -88,7 +98,9 @@ namespace WpfApp2.Repository
 
         public async Task Save()
         {
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
+
+
     }
 }

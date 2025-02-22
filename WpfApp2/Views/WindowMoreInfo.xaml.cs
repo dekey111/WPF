@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp2.Interfaces;
 using WpfApp2.Models;
 using WpfApp2.ViewModels;
 
@@ -21,10 +22,10 @@ namespace WpfApp2.Views
     /// </summary>
     public partial class WindowMoreInfo : Window
     {
-        public WindowMoreInfo(ViewCarTareResponse SelectedCarTare)
+        public WindowMoreInfo(CarResponse selectedCar)
         {
             InitializeComponent();
-            DataContext = new MoreInfoViewModel(SelectedCarTare, diagramm);
+            DataContext = new MoreInfoViewModel(selectedCar, diagramm);
         }
     }
 }

@@ -7,7 +7,9 @@ public partial class Tare
 {
     public long Id { get; set; }
 
-    public string? Number { get; set; }
+    public long? IdCar { get; set; }
+
+    public string Number { get; set; } = null!;
 
     public double GrossWeight { get; set; }
 
@@ -19,5 +21,5 @@ public partial class Tare
 
     public DateTime DateGross { get; set; }
 
-    public virtual ICollection<CarTare> CarTares { get; set; } = new List<CarTare>();
+    public virtual Car? IdCarNavigation { get; set; }
 }

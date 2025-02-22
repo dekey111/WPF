@@ -22,11 +22,10 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0" Grid.ColumnSpan="4" Margin="10"
-                  ItemsSource="{Binding ViewCarTareList}" SelectedItem="{Binding SelectedCarTare}">
+                  ItemsSource="{Binding CarList}" SelectedItem="{Binding SelectedCar}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название машины" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Номер машины" Binding="{Binding CarNumbers}" Width="*"/>
-                <DataGridTextColumn Header="Номер тары" Binding="{Binding TareNumbers}" Width="*"/>
+                <DataGridTextColumn Header="Номер машины" Binding="{Binding Number}" Width="*"/>
 
                 <DataGridTemplateColumn Header="" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>

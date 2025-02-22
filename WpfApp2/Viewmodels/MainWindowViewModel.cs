@@ -12,30 +12,18 @@ using WpfApp2.Database;
 
 namespace WpfApp2.ViewModels
 {
-    public class CareTareViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<ViewCarTareResponse> _viewCarTareList;
-        public ObservableCollection<ViewCarTareResponse> ViewCarTareList
+        private ObservableCollection<CarResponse> _carList;
+        public ObservableCollection<CarResponse> CarList
         {
-            get => _viewCarTareList;
+            get => _carList;
             set
             {
-                _viewCarTareList = value;
-                OnPropertyChanged(nameof(ViewCarTareList));
+                _carList = value;
+                OnPropertyChanged(nameof(CarList));
             }
         }
-
-        private ViewCarTareResponse _selectedCarTare;
-        public ViewCarTareResponse SelectedCarTare
-        {
-            get => _selectedCarTare;
-            set
-            {
-                _selectedCarTare = value;
-                OnPropertyChanged(nameof(SelectedCarTare));
-            }
-        }
-
 
         private CarResponse _selectedCar;
         public CarResponse SelectedCar
@@ -79,14 +67,13 @@ namespace WpfApp2.ViewModels
         public string FileContent => _fileReader.FileContent;
         public bool IsFileReadComplete => _fileReader.IsFileReadComplete;
 
-        IRepository<ViewCarTareResponse> _dbViewCarTareResponse;
+        IRepository<CarResponse> _dbCarResponse;
 
-        public CareTareViewModel(BdtestTaskServerstalContext context, ReadingFileBP fileReader)
+        public MainWindowViewModel(BdtestTaskServerstalContext context, ReadingFileBP fileReader)
         {
             VisibilityOpenFileContext = Visibility.Collapsed;
 
-            _dbViewCarTareResponse = new ViewCarTareRepository();
-            ViewCarTareList = new ObservableCollection<ViewCarTareResponse>();
+            _dbCarResponse = new CarRepository();
             _fileReader = fileReader;
             _fileReader.StartReading();
             _fileReader.PropertyChanged += FileReader_PropertyChanged;
@@ -98,9 +85,9 @@ namespace WpfApp2.ViewModels
         {
             try
             {
-                ViewCarTareList = new ObservableCollection<ViewCarTareResponse>(await _dbViewCarTareResponse.GetAll());
+                CarList = new ObservableCollection<CarResponse>(await _dbCarResponse.GetAll());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка при загрузке данных! \nОписание ошибки: " + ex.Message);
             }
@@ -133,7 +120,7 @@ namespace WpfApp2.ViewModels
             {
                 return _openWindowAdding ?? (_openWindowAdding = new RelayCommand(obj =>
                 {
-                    WindowAdding windowAdding = new WindowAdding(_dbViewCarTareResponse, ViewCarTareList);
+                    WindowAdding windowAdding = new WindowAdding(_dbCarResponse, CarList);
                     windowAdding.Show();
                 }));
             }
@@ -147,10 +134,10 @@ namespace WpfApp2.ViewModels
             {
                 return _openWindowMoreInfo ?? (_openWindowMoreInfo = new RelayCommand(obj =>
                 {
-                    if (SelectedCarTare == null)
+                    if (SelectedCar == null)
                         return;
 
-                    WindowMoreInfo windowMoreInfo = new WindowMoreInfo(SelectedCarTare);
+                    WindowMoreInfo windowMoreInfo = new WindowMoreInfo(SelectedCar);
                     windowMoreInfo.Show();
                 }));
             }

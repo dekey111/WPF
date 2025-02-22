@@ -17,13 +17,9 @@ public partial class BdtestTaskServerstalContext : DbContext
 
     public virtual DbSet<Car> Cars { get; set; }
 
-    public virtual DbSet<CarTare> CarTares { get; set; }
-
     public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
 
     public virtual DbSet<Tare> Tares { get; set; }
-
-    public virtual DbSet<ViewCarTare> ViewCarTare { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -34,21 +30,6 @@ public partial class BdtestTaskServerstalContext : DbContext
         modelBuilder.Entity<Car>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_dbo.Cars");
-        });
-
-        modelBuilder.Entity<CarTare>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_dbo.CarTares");
-
-            entity.HasOne(d => d.IdCarNavigation).WithMany(p => p.CarTares)
-                .HasForeignKey(d => d.IdCar)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CarTares_Cars");
-
-            entity.HasOne(d => d.IdTareNavigation).WithMany(p => p.CarTares)
-                .HasForeignKey(d => d.IdTare)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CarTares_Tares");
         });
 
         modelBuilder.Entity<MigrationHistory>(entity =>
@@ -67,17 +48,12 @@ public partial class BdtestTaskServerstalContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK_dbo.Tares");
 
             entity.Property(e => e.DateGross).HasColumnType("datetime");
+            entity.Property(e => e.IdCar).HasColumnName("idCar");
             entity.Property(e => e.TareDate).HasColumnType("datetime");
-        });
 
-        modelBuilder.Entity<ViewCarTare>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("ViewCarTare");
-
-            entity.Property(e => e.DateGross).HasColumnType("datetime");
-            entity.Property(e => e.TareDate).HasColumnType("datetime");
+            entity.HasOne(d => d.IdCarNavigation).WithMany(p => p.Tares)
+                .HasForeignKey(d => d.IdCar)
+                .HasConstraintName("FK_Tares_Cars");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using WpfApp2.Configs;
+using WpfApp2.Database;
 using WpfApp2.Interfaces;
 using WpfApp2.Models;
 using WpfApp2.Repository;
@@ -16,16 +17,6 @@ namespace WpfApp2.ViewModels
 {
     public class AddingViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<CarResponse> _cars;
-        public ObservableCollection<CarResponse> Cars
-        {
-            get => _cars;
-            set
-            {
-                _cars = value;
-                OnPropertyChanged(nameof(Cars));
-            }
-        }
 
         private ObservableCollection<TareResponse> _tars;
         public ObservableCollection<TareResponse> Tars
@@ -38,30 +29,38 @@ namespace WpfApp2.ViewModels
             }
         }
 
-        private ObservableCollection<ViewCarTareResponse> _viewCarTareList;
-        public ObservableCollection<ViewCarTareResponse> ViewCarTareList
+        private ObservableCollection<CarResponse> _carList;
+        public ObservableCollection<CarResponse> CarList
         {
-            get => _viewCarTareList;
+            get => _carList;
             set
             {
-                _viewCarTareList = value;
-                OnPropertyChanged(nameof(ViewCarTareList));
+                _carList = value;
+                OnPropertyChanged(nameof(CarList));
             }
         }
 
 
-        private readonly IRepository<CarResponse> _dbCarResponse;
-        private readonly IRepository<TareResponse> _dbTareResponse;
-        private readonly IRepository<ViewCarTareResponse> _dbViewCarTareResponse;
-        public AddingViewModel(IRepository<ViewCarTareResponse> dbViewCarTareResponse,ObservableCollection<ViewCarTareResponse> viewCarTareList)
+        private CarResponse _selectedCar;
+        public CarResponse SelectedCar
         {
-            _dbCarResponse = new CarRepository();
+            get => _selectedCar;
+            set
+            {
+                _selectedCar = value;
+                OnPropertyChanged(nameof(SelectedCar));
+            }
+        }
+
+        private readonly IRepository<CarResponse> _dbCarResponse;
+        private readonly IRepositoryToFind<TareResponse> _dbTareResponse;
+        public AddingViewModel(IRepository<CarResponse> dbCarResponse, ObservableCollection<CarResponse> carList)
+        {
+            _dbCarResponse = dbCarResponse;
             _dbTareResponse = new TareRepository();
+            CarList = carList;
 
             GetData();
-
-            _dbViewCarTareResponse = dbViewCarTareResponse;
-            ViewCarTareList = viewCarTareList;
 
             VisibilityCalendarTare = Visibility.Collapsed;
             VisibilityCalendarGross = Visibility.Collapsed;
@@ -70,14 +69,8 @@ namespace WpfApp2.ViewModels
 
         private async Task GetData()
         {
-            LoadCar();
             LoadTare();
         }
-        private async Task LoadCar()
-        {
-            Cars = new ObservableCollection<CarResponse>(await _dbCarResponse.GetAll());
-        }
-
         private async Task LoadTare()
         {
             Tars = new ObservableCollection<TareResponse>(await _dbTareResponse.GetAll());
@@ -128,7 +121,7 @@ namespace WpfApp2.ViewModels
 
                         var newItem = await _dbCarResponse.Create(carResponse);
                         await _dbCarResponse.Save();
-                        Cars.Add(newItem);
+                        CarList.Add(newItem);
                     }
                     catch (Exception ex)
                     {
@@ -323,6 +316,7 @@ namespace WpfApp2.ViewModels
                         TareResponse tareResponse = new TareResponse()
                         {
                             Number = NumberTare,
+                            IdCar = SelectedCar.Id,
                             TareWeight = WeightTare,
                             NetWeight = WeightNet,
                             GrossWeight = WeightGrossTare,
@@ -346,69 +340,6 @@ namespace WpfApp2.ViewModels
 
 
         #endregion
-
-        #region Работа со связями
-
-        private CarResponse _selectedCar;
-        public CarResponse SelectedCar
-        {
-            get => _selectedCar;
-            set
-            {
-                _selectedCar = value;
-                OnPropertyChanged(nameof(SelectedCar));
-            }
-        }
-
-        private TareResponse _selectedTare;
-        public TareResponse SelectedTare
-        {
-            get => _selectedTare;
-            set
-            {
-                _selectedTare = value;
-                OnPropertyChanged(nameof(SelectedTare));
-            }
-        }
-
-
-        private RelayCommand _addingCarTares;
-        public RelayCommand AddingCarTares
-        {
-            get
-            {
-                return _addingCarTares ?? (_addingCarTares = new RelayCommand(async obj =>
-                {
-                    try
-                    {
-                        if (SelectedCar == null || SelectedTare == null)
-                        {
-                            MessageBox.Show("Транспорт или Тара не могут быть пустыми!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            return;
-                        }
-
-                        ViewCarTareResponse carTare = new ViewCarTareResponse()
-                        {
-                            IdCar = SelectedCar.Id,
-                            IdTare = SelectedTare.Id
-                        };
-
-                        var newItem = await _dbViewCarTareResponse.Create(carTare);
-                        await _dbTareResponse.Save();
-                        ViewCarTareList.Add(newItem);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Ошибка: " + ex.Message, "Уведомление", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }));
-            }
-        }
-        #endregion
-
-
-
-
 
 
 

@@ -7,7 +7,7 @@ namespace WpfApp2.Repository
 {
     internal class CarRepository : IRepository<CarResponse>
     {
-        private readonly BdtestTaskServerstalContext _db; 
+        private readonly BdtestTaskServerstalContext _db;
 
         public CarRepository()
         {
@@ -19,7 +19,7 @@ namespace WpfApp2.Repository
             _db.Cars.ToList().ForEach(x => carResponses.Add(new CarResponse(x)));
             return carResponses;
         }
-        
+
         public async Task<CarResponse> Create(CarResponse item)
         {
             if (_db.Cars.Any(x => x.Number == item.Number))
@@ -36,7 +36,7 @@ namespace WpfApp2.Repository
 
         public async Task<CarResponse> Update(CarResponse item)
         {
-            var findCar = await _db.Cars.FirstOrDefaultAsync(x => x.Id == item.Id);
+            var findCar = _db.Cars.FirstOrDefault(x => x.Id == item.Id);
             if (findCar == null)
                 throw new Exception("Транспорт не найден!");
 
@@ -49,7 +49,7 @@ namespace WpfApp2.Repository
 
         public async Task Delete(long id)
         {
-            var findCar = await _db.Cars.FirstOrDefaultAsync(x => x.Id == id);
+            var findCar = _db.Cars.FirstOrDefault(x => x.Id == id);
             if (findCar == null)
                 throw new Exception("Транспорт не найден!");
 
@@ -79,7 +79,7 @@ namespace WpfApp2.Repository
 
         public async Task Save()
         {
-           await _db.SaveChangesAsync();
+            _db.SaveChanges();
         }
     }
 }

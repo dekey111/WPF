@@ -15,7 +15,7 @@ namespace WpfApp2
             InitializeComponent();
             BdtestTaskServerstalContext context = new BdtestTaskServerstalContext();
             var _fileReader = new ReadingFileBP();
-            DataContext = new CareTareViewModel(context, _fileReader);
+            DataContext = new MainWindowViewModel(context, _fileReader);
         }
     }
 }

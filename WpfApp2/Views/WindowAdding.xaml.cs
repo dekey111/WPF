@@ -12,10 +12,10 @@ namespace WpfApp2.Views
     /// </summary>
     public partial class WindowAdding : Window
     {
-        public WindowAdding(IRepository<ViewCarTareResponse> _dbViewCarTareResponse,ObservableCollection<ViewCarTareResponse> ViewCarTareList)
+        public WindowAdding(IRepository<CarResponse> dbCarResponse, ObservableCollection<CarResponse> carList)
         {
             InitializeComponent();
-            DataContext = new AddingViewModel(_dbViewCarTareResponse, ViewCarTareList);
+            DataContext = new AddingViewModel(dbCarResponse, carList);
         }
     }
 }

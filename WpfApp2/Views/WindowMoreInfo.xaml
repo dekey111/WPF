@@ -29,34 +29,17 @@
 
         <TextBlock Grid.ColumnSpan="3"
                    HorizontalAlignment="Center"
-                   Text="{Binding TextHeader}"/>
+                   VerticalAlignment="Center"
+                   Text="{Binding SelectedCar.FullNameCar}"
+                   FontWeight="Medium"/>
 
-
-
-        <TextBox Grid.Row="1" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="Транспорт" Text="{Binding SelectedCarTare.FullNameCar}"/>
-
-        <TextBox Grid.Row="2" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="Номер Тары" Text="{Binding SelectedCarTare.TareNumbers}"/>
-
-        <TextBox Grid.Row="3" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="вес брутто"  Text="{Binding SelectedCarTare.GrossWeight}"/>
-
-        <TextBox Grid.Row="4" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="вес тары"  Text="{Binding SelectedCarTare.TareWeight}"/>
-
-        <TextBox Grid.Row="5" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="вес нетто"  Text="{Binding SelectedCarTare.NetWeight}"/>
-        
-        <TextBox Grid.Row="6" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="дата тары" Text="{Binding SelectedCarTare.TareDate}"/>
-
-        <TextBox Grid.Row="7" Grid.Column="0" Margin="10" IsReadOnly="True"
-                 Tag="дата брутто" Text="{Binding SelectedCarTare.DateGross}"/>
 
 
         <ScottPlot:WpfPlot x:Name="diagramm" Grid.Row="1" Grid.Column="1"
                            Grid.RowSpan="7" Grid.ColumnSpan="2"/>
+
+        <ListBox ItemsSource="{Binding TaresByCar}"
+                 Grid.Row="1" Grid.RowSpan="7" Margin="5"/>
 
     </Grid>
 </Window>
