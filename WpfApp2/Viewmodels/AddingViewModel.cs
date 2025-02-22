@@ -54,6 +54,13 @@ namespace WpfApp2.ViewModels
 
         private readonly IRepository<CarResponse> _dbCarResponse;
         private readonly IRepositoryToFind<TareResponse> _dbTareResponse;
+
+
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
+        /// <param name="dbCarResponse">Принимает ссылку на конеткст репозитория работы с транспортом</param>
+        /// <param name="carList">Принимает список транспортов</param>
         public AddingViewModel(IRepository<CarResponse> dbCarResponse, ObservableCollection<CarResponse> carList)
         {
             _dbCarResponse = dbCarResponse;
@@ -102,6 +109,7 @@ namespace WpfApp2.ViewModels
 
 
         private RelayCommand _addingCar;
+
         /// <summary>
         /// Команда для доблавление нового транспорта
         /// </summary>
@@ -304,6 +312,9 @@ namespace WpfApp2.ViewModels
         }
 
 
+        /// <summary>
+        /// Метод для доблавение новой тары
+        /// </summary>
         private RelayCommand _addingTares;
         public RelayCommand AddingTares
         {

@@ -69,6 +69,12 @@ namespace WpfApp2.ViewModels
 
         IRepository<CarResponse> _dbCarResponse;
 
+
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
+        /// <param name="context">Принимает контекст БД</param>
+        /// <param name="fileReader">Принимает объект сервиса по чтению файла</param>
         public MainWindowViewModel(BdtestTaskServerstalContext context, ReadingFileBP fileReader)
         {
             VisibilityOpenFileContext = Visibility.Collapsed;
@@ -81,6 +87,10 @@ namespace WpfApp2.ViewModels
             Start();
         }
 
+        /// <summary>
+        /// Мето для загрузки всех транспортов
+        /// </summary>
+        /// <returns></returns>
         private async Task Start()
         {
             try

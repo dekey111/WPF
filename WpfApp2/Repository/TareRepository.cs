@@ -13,6 +13,10 @@ namespace WpfApp2.Repository
             _db = new BdtestTaskServerstalContext();
         }
 
+        /// <summary>
+        /// Метод полоучения всех тар
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<TareResponse>> GetAll()
         {
             List<TareResponse> tareResponses = new List<TareResponse>();
@@ -20,6 +24,11 @@ namespace WpfApp2.Repository
             return tareResponses;
         }
 
+        /// <summary>
+        /// Метод получения всех тар для конкретного транспорта
+        /// </summary>
+        /// <param name="id">Принимает idCar</param>
+        /// <returns>Возвращает список всех тар</returns>
         public async Task<IEnumerable<TareResponse>> GetFromId(long id)
         {
             List<TareResponse> tareResponses = new List<TareResponse>();
@@ -27,6 +36,12 @@ namespace WpfApp2.Repository
             return tareResponses;
         }
 
+        /// <summary>
+        /// Метод создания новой тары
+        /// </summary>
+        /// <param name="item">Принимает параметры тары</param>
+        /// <returns>Возвращает новый объект тары</returns>
+        /// <exception cref="Exception"></exception>
         public async Task<TareResponse> Create(TareResponse item)
         {
             if (_db.Tares.Any(x => x.Number == item.Number))
@@ -48,7 +63,12 @@ namespace WpfApp2.Repository
         }
 
 
-
+        /// <summary>
+        /// Метод обновления тары
+        /// </summary>
+        /// <param name="item">Принимает параметры тары</param>
+        /// <returns>Возвращает новый объект тары</returns>
+        /// <exception cref="Exception"></exception>
         public async Task<TareResponse> Update(TareResponse item)
         {
             var findTare = _db.Tares.FirstOrDefault(x => x.Id == item.Id);
@@ -67,6 +87,12 @@ namespace WpfApp2.Repository
             return new TareResponse(findTare);
         }
 
+        /// <summary>
+        /// Метод удаления тары
+        /// </summary>
+        /// <param name="id">Принимает id тары</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Delete(long id)
         {
             var findTare = _db.Tares.FirstOrDefault(x => x.Id == id);
@@ -77,6 +103,7 @@ namespace WpfApp2.Repository
         }
 
         private bool disposed = false;
+
 
         public virtual void Dispose(bool disposing)
         {

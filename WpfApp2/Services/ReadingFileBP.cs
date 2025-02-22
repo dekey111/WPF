@@ -52,6 +52,9 @@ namespace WpfApp2.Services
 
         private BackgroundWorker _backgroundWorker;
 
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
         public ReadingFileBP()
         {
             IsFileReadComplete = false;
@@ -62,9 +65,14 @@ namespace WpfApp2.Services
                 WorkerSupportsCancellation = true
             };
 
+            //Привязываем события воркера
             _backgroundWorker.DoWork += BackgroundWorker_DoWork;
             _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
         }
+
+        /// <summary>
+        /// Метод запуска фоновой задачи
+        /// </summary>
         public void StartReading()
         {
             if (_backgroundWorker.IsBusy)
@@ -74,11 +82,18 @@ namespace WpfApp2.Services
             _backgroundWorker.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Тело выполнения фоновой задачи
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 _backgroundWorker.ReportProgress(1, "Чтение файла");
+
+                //Специально стоит задержка, для проверки изменения статуса
                 Thread.Sleep(5000);
                 string filePath = "File.txt";
                 string fileContent = File.ReadAllText(filePath);
@@ -92,6 +107,11 @@ namespace WpfApp2.Services
             }
         }
 
+        /// <summary>
+        /// Метод прекращения выполнения задачи служит для вызова OnPropertyChanged, чтобы появилась кнопка на главном экране
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Status = "Файл успешно прочитан";

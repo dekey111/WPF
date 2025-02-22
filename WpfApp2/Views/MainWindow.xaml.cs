@@ -13,6 +13,8 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
+
+            //Определенеие контекста БД. 
             BdtestTaskServerstalContext context = new BdtestTaskServerstalContext();
             var _fileReader = new ReadingFileBP();
             DataContext = new MainWindowViewModel(context, _fileReader);

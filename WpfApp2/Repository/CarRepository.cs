@@ -13,6 +13,11 @@ namespace WpfApp2.Repository
         {
             _db = new BdtestTaskServerstalContext();
         }
+
+        /// <summary>
+        /// Метод для получения информации по всем транспортам
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<CarResponse>> GetAll()
         {
             List<CarResponse> carResponses = new List<CarResponse>();
@@ -20,6 +25,12 @@ namespace WpfApp2.Repository
             return carResponses;
         }
 
+        /// <summary>
+        /// Метод создания нового транспорта
+        /// </summary>
+        /// <param name="item">Принимает параметры транспорта</param>
+        /// <returns>Возвращает список транспортов</returns>
+        /// <exception cref="Exception"></exception>
         public async Task<CarResponse> Create(CarResponse item)
         {
             if (_db.Cars.Any(x => x.Number == item.Number))
@@ -34,6 +45,12 @@ namespace WpfApp2.Repository
             return new CarResponse(car);
         }
 
+        /// <summary>
+        /// Метод обновления транспорта 
+        /// </summary>
+        /// <param name="item">принимает параметры транспорта </param>
+        /// <returns>Возвращает новый объект транспорта</returns>
+        /// <exception cref="Exception"></exception>
         public async Task<CarResponse> Update(CarResponse item)
         {
             var findCar = _db.Cars.FirstOrDefault(x => x.Id == item.Id);
@@ -47,6 +64,12 @@ namespace WpfApp2.Repository
             return new CarResponse(findCar);
         }
 
+        /// <summary>
+        /// Метод удаления транспорта 
+        /// </summary>
+        /// <param name="id">Принимает id транспорта</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task Delete(long id)
         {
             var findCar = _db.Cars.FirstOrDefault(x => x.Id == id);

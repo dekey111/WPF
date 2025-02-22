@@ -46,6 +46,11 @@ namespace WpfApp2.ViewModels
         IRepositoryToFind<TareResponse> _dbTareResponse;
         private ScottPlot.WPF.WpfPlot _wpfPlot;
 
+        /// <summary>
+        /// Конструктор класса
+        /// </summary>
+        /// <param name="selectedCar">Принимает выбранный транспорт</param>
+        /// <param name="wpfPlot">Принимате график из WPF</param>
         public MoreInfoViewModel(CarResponse selectedCar, ScottPlot.WPF.WpfPlot wpfPlot)
         {
             SelectedCar = selectedCar;
@@ -53,32 +58,29 @@ namespace WpfApp2.ViewModels
             _wpfPlot = wpfPlot;
 
             GetData();
-
-
-
         }
+
+        /// <summary>
+        /// Метод для загрузки данных
+        /// </summary>
+        /// <returns></returns>
         private async Task GetData()
         {
             TaresByCar = new ObservableCollection<TareResponse>(await _dbTareResponse.GetFromId(SelectedCar.Id));
             GenerateDiagramm();
-            GetTaresInfo();
         }
 
-        private async Task GetTaresInfo()
-        {
-
-        }
-
-
+        /// <summary>
+        /// Метод для загрузки диаграммы
+        /// </summary>
+        /// <returns></returns>
         private async Task GenerateDiagramm()
         {
-            // plot sample DateTime data
             DateTime[] dates = TaresByCar.Select(x => Convert.ToDateTime(x.TareDate)).ToArray();
             double[] ys =  TaresByCar.Select(x => x.TareWeight).ToArray();
             _wpfPlot.Plot.Add.Scatter(dates, ys);
             _wpfPlot.Plot.Axes.DateTimeTicksBottom();
 
-            // add logic into the RenderStarting event to customize tick labels
             _wpfPlot.Plot.RenderManager.RenderStarting += (s, e) =>
             {
                 Tick[] ticks = _wpfPlot.Plot.Axes.Bottom.TickGenerator.Ticks;
@@ -89,7 +91,6 @@ namespace WpfApp2.ViewModels
                     ticks[i] = new Tick(ticks[i].Position, label);
                 }
             };
-
             _wpfPlot.Refresh();
         }
 
