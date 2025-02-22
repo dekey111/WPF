@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2.Views"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Дополнительная информация" MinHeight="500" Height="700" Width="1100" MinWidth="800">
     <Grid>
@@ -23,6 +24,7 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width=".2*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="3"
@@ -53,7 +55,8 @@
                  Tag="дата брутто" Text="{Binding SelectedCarTare.DateGross}"/>
 
 
-
+        <ScottPlot:WpfPlot x:Name="diagramm" Grid.Row="1" Grid.Column="1"
+                           Grid.RowSpan="7" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

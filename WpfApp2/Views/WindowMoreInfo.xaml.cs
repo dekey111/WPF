@@ -24,7 +24,7 @@ namespace WpfApp2.Views
         public WindowMoreInfo(ViewCarTareResponse SelectedCarTare)
         {
             InitializeComponent();
-            DataContext = new MoreInfoViewModel(SelectedCarTare);
+            DataContext = new MoreInfoViewModel(SelectedCarTare, diagramm);
         }
     }
 }

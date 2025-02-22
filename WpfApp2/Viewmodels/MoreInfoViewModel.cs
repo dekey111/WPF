@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -23,9 +24,33 @@ namespace WpfApp2.ViewModels
                 OnPropertyChanged(nameof(SelectedCarTare));
             }
         }
-        public MoreInfoViewModel(ViewCarTareResponse selectedCarTare)
+        public MoreInfoViewModel(ViewCarTareResponse selectedCarTare, ScottPlot.WPF.WpfPlot wpfPlot)
         {
             SelectedCarTare = selectedCarTare;
+
+
+            Dictionary<string, double> dict = new Dictionary<string, double>()
+            {
+                {"Нетто", SelectedCarTare.NetWeight },
+                {"Брутто", SelectedCarTare.GrossWeight },
+                {"Тара", SelectedCarTare.TareWeight }
+            };
+
+            var barPlot = wpfPlot.Plot.Add.Bars(dict.Values.ToArray());
+
+            var dictKeys = dict.Keys.ToArray();
+            int i = 0;
+            foreach (var bar in barPlot.Bars)
+            {
+                bar.Label = dictKeys[i];
+                i++;
+            }
+
+            barPlot.ValueLabelStyle.Bold = true;
+            barPlot.ValueLabelStyle.FontSize = 18;
+
+            wpfPlot.Plot.Axes.Margins(bottom: 0, top: .2);
+            wpfPlot.Refresh();
         }
 
 
