@@ -71,7 +71,7 @@ namespace WpfApp2.ViewModels
         }
 
         /// <summary>
-        /// Метод для загрузки диаграммы
+        /// Метод для загрузки диаграммы по весу тары!
         /// </summary>
         /// <returns></returns>
         private async Task GenerateDiagramm()
