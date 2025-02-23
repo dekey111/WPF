@@ -67,7 +67,18 @@ namespace WpfApp2.Services
 
             //Привязываем события воркера
             _backgroundWorker.DoWork += BackgroundWorker_DoWork;
+            _backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged; ;
             _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+        }
+
+        /// <summary>
+        /// Метод для изменения статуса
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackgroundWorker_ProgressChanged(object? sender, ProgressChangedEventArgs e)
+        {
+            Status = e.UserState.ToString();
         }
 
         /// <summary>
@@ -81,6 +92,7 @@ namespace WpfApp2.Services
             Status = "Запустился бэк";
             _backgroundWorker.RunWorkerAsync();
         }
+
 
         /// <summary>
         /// Тело выполнения фоновой задачи
